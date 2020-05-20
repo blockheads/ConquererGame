@@ -14,4 +14,4 @@ Every good RPG has map generation
 - Added resizable console
 ![Resizeable Console](progress/console_resized.PNG)
 - Added multiple NPC selection
-![multiple NPC selection](npc_multiple_selection_output.PNG)
+![multiple NPC selection](progress/npc_multiple_selection_output.PNG)
