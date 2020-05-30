@@ -2,6 +2,7 @@
 import pygame
 from pygame import font
 
+from parsing.parse import Parser
 from Canvas import WHITE, BLACK
 
 CONSOLE_FONT_SIZE = 16
@@ -21,6 +22,9 @@ class Console:
         for i in range(0,self._size):
             self._log.append(Message(["?"*40]))
 
+        # parsing for commands
+        self._parser = Parser(self)
+
     """
     Returns overall size of the console
     """
@@ -38,14 +42,18 @@ class Console:
     def push(self, message):
         # if we are pushing a trivial string we wrap it around our Message class for ease
         if isinstance(message, str):
+            # we have to try and parse this message
+            self._parser.parse(message)
+
             print("converted...")
             message = Message([message])
 
         # iterate from the top, pushing each message up 1
         for i in range(self._size-1, 0, -1):
-            print(i)
+
             self._log[i] = self._log[i-1]
         # finally set the bottom equal to the message
+
         self._log[0] = message
 
     """
@@ -67,7 +75,7 @@ class Console:
 
                 currect = pygame.Rect(shift, height - (i+2)*CONSOLE_FONT_SIZE, width,CONSOLE_FONT_SIZE)
                 curtext = font.render(string, True, WHITE, BLACK)
-                shift += len(string)*CONSOLE_FONT_SIZE/2
+                shift += len(string)*CONSOLE_FONT_SIZE/1.9
                 # if we got a image
                 if image:
                     # need to scale it down to our font size
@@ -119,4 +127,3 @@ class Message:
             return self._strings[i], None
         # otherwise we pop off a pair of a string and a image
         return self._strings[i], self._images[i]
-

@@ -34,13 +34,14 @@ legal_console_keys = [pygame.K_a, pygame.K_b, pygame.K_c, pygame.K_d, pygame.K_e
                       pygame.K_y, pygame.K_z]
 
 user_input = ">"
+
+# initialize a console
+console = Console(10)
+
 if __name__ == "__main__":
 
     # start the game
     start()
-
-    # initialize a console
-    console = Console(10)
 
     # generate a nordic npc
     npc = NordicHuman()
@@ -62,7 +63,7 @@ if __name__ == "__main__":
                     colorimage = pygame.surfarray.array3d(npc.sprite)
                     colorimage = colorimage[1,:,:]
                     out = pygame.surfarray.make_surface(colorimage)
-                    message = Message(["selected", npc.name, "haha funnies", "poopoo","asdfdsafa","asdfdsaasdfdsaasddfsasdfasdfsdfsfdsfsfdsdfsdfsdfsdf"], [npc.sprite, out])
+                    message = Message(["selected", npc.name, "selected",npc.name], [npc.sprite, npc.sprite])
                     console.push(message)
 
             if event.type == pygame.KEYDOWN:
