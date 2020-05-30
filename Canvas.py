@@ -22,14 +22,14 @@ class Canvas:
     """
     updates the canvas
     """
-    def update(self, x, y, userinput, console, npc):
+    def update(self, x, y, inputHandler, npc):
 
 
         self._display.fill(WHITE)
 
         self._display.blit(npc.sprite, (400, 600))
 
-        console.display(self.display,self._height,self._width,userinput)
+        inputHandler.console.display(inputHandler.user_input, self.display,self._height,self._width)
 
         self._display.blit(Sprites.CHAR_N, (x, y))
         self._display.blit(npc.sprite, (npc.x, npc.y))

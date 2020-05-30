@@ -5,6 +5,7 @@ from pygame import font
 from parsing.parse import Parser
 from Canvas import WHITE, BLACK
 
+
 CONSOLE_FONT_SIZE = 16
 # how long the console should be
 CONSOLE_LENGTH = 5
@@ -23,7 +24,7 @@ class Console:
             self._log.append(Message(["?"*40]))
 
         # parsing for commands
-        self._parser = Parser(self)
+        self.parser = Parser(self)
 
     """
     Returns overall size of the console
@@ -43,7 +44,7 @@ class Console:
         # if we are pushing a trivial string we wrap it around our Message class for ease
         if isinstance(message, str):
             # we have to try and parse this message
-            self._parser.parse(message)
+            self.parser.command(message)
 
             print("converted...")
             message = Message([message])
@@ -59,7 +60,7 @@ class Console:
     """
     displays the console to the screen given a valid display
     """
-    def display(self, display, height, width, userinput):
+    def display(self, userInput, display, height, width):
         # console text
         font = pygame.font.Font('freesansbold.ttf', CONSOLE_FONT_SIZE)
 
@@ -87,7 +88,7 @@ class Console:
 
         # create a text surface object,
         # on which text is drawn on it.
-        text = font.render(userinput, True, WHITE, BLACK)
+        text = font.render(userInput, True, WHITE, BLACK)
 
         # text surface object
         textRect = text.get_rect()

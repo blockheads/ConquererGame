@@ -3,7 +3,7 @@ class Parser:
     def __init__(self, console):
         self._console = console
 
-    def parse(self, message):
+    def command(self, message):
 
         split = message.split(' ')
 
@@ -12,10 +12,10 @@ class Parser:
         if command == 'HELP':
             self.help()
 
-
     def help(self):
 
         self._console.push("this is a help message.")
+
 
 
 
