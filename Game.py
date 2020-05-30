@@ -46,7 +46,7 @@ if __name__ == "__main__":
     # main loop
     while not crashed:
         for event in pygame.event.get():
-            inputHandler.handle(event, npc)
+            inputHandler.handle(event, npc, canvas)
 
         cur_x += x_change
         cur_y += y_change

@@ -21,16 +21,32 @@ class Handler:
 
     def __init__(self):
         self.user_input = ">"
-        self.mode = COMMAND_MODE
+        self.console_mode = COMMAND_MODE
         self.console = console
 
-    def handle(self,event, npc):
+        self._selecting = False
+
+    def handle(self,event, npc, canvas):
         if event.type == pygame.QUIT:
             crashed = True
 
+        if self._selecting:
+            x, y = pygame.mouse.get_pos()
+
+            canvas.drawSelectionBox(x,y)
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                console.push("mouse button released")
+                self._selecting = False
+                canvas.endDrawSelection()
+
+                # get selected targets
+
         if event.type == pygame.MOUSEBUTTONDOWN:
+            console.push("mouse button down")
             # Set the x, y postions of the mouse click
             x, y = event.pos
+
             if npc.collided(x, y):
                 # custom message with images
                 # color sprite
@@ -40,9 +56,14 @@ class Handler:
                 message = Message(["selected", npc.name, "selected", npc.name], [npc.sprite, npc.sprite])
                 console.push(message)
 
+            else:
+                canvas.startDrawSelection(x,y)
+                self._selecting = True
+
 
         # say move
-        if self.mode == SAY_MODE:
+        if self.console_mode == SAY_MODE:
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     self.user_input = self.user_input[0:5] + self.user_input[5:len(self.user_input) - 3] + " \""
@@ -57,7 +78,7 @@ class Handler:
                     key = pygame.key.name(event.key)
                     self.user_input = self.user_input[:len(self.user_input) - 2] + key + " \""
 
-        if self.mode == COMMAND_MODE:
+        if self.console_mode == COMMAND_MODE:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
@@ -82,11 +103,11 @@ class Handler:
                 # if it wasn't a movement't option it was textual input for the console
                 elif event.key in legal_console_keys:
 
-                    if self.mode == COMMAND_MODE:
+                    if self.console_mode == COMMAND_MODE:
                         self.user_input += key.upper()
 
                         if self.user_input == ">SAY":
-                            self.mode = SAY_MODE
+                            self.console_mode = SAY_MODE
                             self.user_input = ">SAY \"  \""
 
             if event.type == pygame.KEYUP:

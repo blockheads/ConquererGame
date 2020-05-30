@@ -19,11 +19,14 @@ class Canvas:
         # setting our display
         self._display = pygame.display.set_mode((width, height))
 
+        self._selectionStart = (0,0)
+        self._selectionEnd = (0,0)
+        self._selecting = False
+
     """
     updates the canvas
     """
     def update(self, x, y, inputHandler, npc):
-
 
         self._display.fill(WHITE)
 
@@ -34,7 +37,24 @@ class Canvas:
         self._display.blit(Sprites.CHAR_N, (x, y))
         self._display.blit(npc.sprite, (npc.x, npc.y))
 
+        # draw queue stuff
+        if self._selecting:
+            width = self._selectionEnd[0] - self._selectionStart[0]
+            height = self._selectionEnd[1] - self._selectionStart[1]
+            pygame.draw.rect(self._display, BLACK, (self._selectionStart[0],self._selectionStart[1] ,width, height), 1)
+
         pygame.display.update()
+
+    def startDrawSelection(self, x, y):
+        self._selecting = True
+        self._selectionStart = (x,y)
+        self._selectionEnd = (x, y)
+
+    def drawSelectionBox(self, x, y):
+        self._selectionEnd = (x,y)
+
+    def endDrawSelection(self):
+        self._selecting = False
 
     """
     Get's the game width
